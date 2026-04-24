@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dearest Amara - 21</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:italic,wght@0,400;1,700&family=Quicksand:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rose-gold: #e2a9be;
+            --deep-wine: #1a0f12;
+            --soft-pink: #fceef2;
+            --gold-glow: rgba(226, 169, 190, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #0a0a0a;
+            color: var(--soft-pink);
+            font-family: 'Quicksand', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Latar Belakang Mewah (Nebula Effect) */
+        .bg-visual {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, #2c1a1d 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, #1a1f2c 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, #120c0e 0%, #050505 100%);
+            z-index: -1;
+            filter: blur(50px);
+            animation: nebulaMove 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes nebulaMove {
+            from { transform: scale(1); }
+            to { transform: scale(1.2) rotate(5deg); }
+        }
+
+        /* Canvas untuk partikel mewah */
+        #canvas {
+            position: fixed;
+            top: 0; left: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 1000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .main-card {
+            width: 88%;
+            max-width: 480px;
+            padding: 60px 30px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(226, 169, 190, 0.15);
+            border-radius: 40px;
+            z-index: 10;
+            text-align: center;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            transform: translateZ(0);
+        }
+
+        .slide { display: none; animation: slideIn 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
+        .slide.active { display: block; }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.6rem;
+            color: var(--rose-gold);
+            font-style: italic;
+            margin-bottom: 25px;
+            text-shadow: 0 0 20px var(--gold-glow);
+        }
+
+        p {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            font-weight: 300;
+            color: #cccbc1;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            margin-top: 40px;
+            padding: 15px 40px;
+            background: transparent;
+            border: 1px solid var(--rose-gold);
+            color: var(--rose-gold);
+            border-radius: 100px;
+            cursor: pointer;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            transition: 0.5s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            background: var(--rose-gold);
+            color: #1a0f12;
+            box-shadow: 0 0 30px rgba(226, 169, 190, 0.4);
+        }
+
+        .progress-text {
+            margin-top: 30px;
+            font-size: 0.6rem;
+            letter-spacing: 5px;
+            color: var(--rose-gold);
+            opacity: 0.4;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); filter: blur(10px); }
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-visual"></div>
+    <canvas id="canvas"></canvas>
+
+    <div id="overlay">
+        <h2 style="font-weight: 300; letter-spacing: 10px; margin-bottom: 30px; font-size: 0.9rem;">ESPECIALLY FOR YOU</h2>
+        <button class="btn" onclick="init()">Unveil Gift</button>
+    </div>
+
+    <audio id="music" loop><source src="Music.mp3" type="audio/mpeg"></audio>
+
+    <div class="main-card">
+        <div class="slide active" id="s1">
+            <h1>Dearest, Amara.</h1>
+            <p>Selamat ulang tahun yang ke-21. Ini suatu hal kecil yang aku buat khusus untuk kamu bih.</p>
+            <button class="btn" onclick="next(2)">Next</button>
+            <p class="progress-text">I / X</p>
+        </div>
+
+        <div class="slide" id="s2">
+            <h1>Sweet 21.</h1>
+            <p>Btw makin tua aja nih bidadari. Semoga tahun ini jadi tahun yang terbaik untuk kamu yaa sayang.</p>
+            <button class="btn" onclick="next(3)">Next</button>
+            <p class="progress-text">II / X</p>
+        </div>
+
+        <div class="slide" id="s3">
+            <h1>The Melody.</h1>
+            <p>Aku pilih lagu ini berharap nih lagu bisa nemenin mood baca kamu sayang wkwk, romantis kan guaaa.</p>
+            <button class="btn" onclick="next(4)">Next</button>
+            <p class="progress-text">III / X</p>
+        </div>
+
+        <div class="slide" id="s4">
+            <h1>Your Strength.</h1>
+            <p>makasiii ya sudah menjadi wanita yang kuat dan tengil buat nemenin hari hari aku makasiii yaaa. aku harap kamu selalu di permudah dalam hal apapun itu.</p>
+            <button class="btn" onclick="next(5)">Next</button>
+            <p class="progress-text">IV / X</p>
+        </div>
+
+        <div class="slide" id="s5">
+            <h1>Be Yourself.</h1>
+            <p>Tetap Amara yang bisa tengil selalu didepan aku yang gamau di pegang ketiaknya dan selalu ceria terus yaa. Aku seneng setiap harinya bisa begitu dengan kamu bih</p>
+            <button class="btn" onclick="next(6)">Next</button>
+            <p class="progress-text">V / X</p>
+        </div>
+
+        <div class="slide" id="s6">
+            <h1>I'm Here.</h1>
+            <p>Apapun yang kamu lalui, ingat kalo kamu punya aku yang akan selalu support kamu terus, Gunain pundak aku di saat kamu dalam keadaan kesulitan bih yah, aku sayang kamu.</p>
+            <button class="btn" onclick="next(7)">Next</button>
+            <p class="progress-text">VI / X</p>
+        </div>
+
+        <div class="slide" id="s7">
+            <h1>Grateful.</h1>
+            <p>Aku berharap agar dunia kamu selalu penuh dengan warna-warna dan kebahagiaan yang di jalanin bareng aku yaw.</p>
+            <button class="btn" onclick="next(8)">Next</button>
+            <p class="progress-text">VII / X</p>
+        </div>
+
+        <div class="slide" id="s8">
+            <h1>Reach High.</h1>
+            <p>Jangan pernah takut. Aku dan Mbul selalu di samping kamu ko, Semangatt mamahh mbul.</p>
+            <button class="btn" onclick="next(9)">Next</button>
+            <p class="progress-text">VIII / X</p>
+        </div>
+
+        <div class="slide" id="s9">
+            <h1>Enjoy Today.</h1>
+            <p>Hari ini hari lahir kamu. aku harap yang terbaik selalu nyertain diri kamu sayang yah i love you.</p>
+            <button class="btn" onclick="next(10)">Last</button>
+            <p class="progress-text">IX / X</p>
+        </div>
+
+        <div class="slide" id="s10">
+            <h1>Love, Always.</h1>
+            <p>Happy Birthday, bibihhh. Terima kasih sudah menjadi bagian terindah dari dunia aku. <br><br><b>I love you.</b></p>
+            <button class="btn" onclick="next(1)">Restart</button>
+            <p class="progress-text">X / X</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function init() {
+            document.getElementById('overlay').style.opacity = '0';
+            document.getElementById('overlay').style.pointerEvents = 'none';
+            document.getElementById('music').play();
+            resize();
+            animate();
+        }
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedY = Math.random() * 0.5 + 0.2;
+                this.opacity = Math.random();
+            }
+            update() {
+                this.y -= this.speedY;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(226, 169, 190, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 100; i++) { particles.push(new Particle()); }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+
+        function next(n) {
+            document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+            document.getElementById('s' + n).classList.add('active');
+        }
+    </script>
+</body>
+</html>
